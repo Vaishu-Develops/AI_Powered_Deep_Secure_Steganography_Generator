@@ -1,13 +1,5 @@
 # encoding: utf-8
-"""
-@author: yongzhi li
-@contact: yongzhili@vip.qq.com
 
-@version: 1.0
-@file: main.py
-@time: 2018/3/20
-
-"""
 
 import argparse
 import os
