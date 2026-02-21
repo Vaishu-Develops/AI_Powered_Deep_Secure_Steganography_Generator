@@ -1,0 +1,39 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Node / frontend build artifacts
+**/node_modules/
+**/.vite/
+**/dist/
+.pnpm-store/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Runtime/generated folders
+temp/
+uploads/
+backend/temp/
+backend/uploads/
+
+# Model checkpoints and archives (large binaries)
+*.pth
+*.pt
+*.ckpt
+*.tar.gz
+*.tar.gz.*
+backend/checkpoints/
+pytorch-Deep-Steganography/checkPoint/
+
+# Local outputs/images
+result_*.png
