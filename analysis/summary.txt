@@ -1,0 +1,3 @@
+psnr_cover_stego_mean=15.400884
+psnr_secret_revealed_mean=20.046517
+ssim_secret_revealed_mean=0.573874
