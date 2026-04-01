@@ -8,6 +8,7 @@ except ImportError:
 import os
 import hashlib
 import numpy as np
+import cv2
 
 class ImageSteganography:
     def __init__(self, h_model_path=None, r_model_path=None):
@@ -37,7 +38,7 @@ class ImageSteganography:
         img_resized = img_pil.resize((256, 256)).convert('RGB')
         img_np = np.array(img_resized)
         
-        block_size = 8
+        block_size = 4
         num_blocks = 256 // block_size
         
         # Reshape to (num_blocks, block_size, num_blocks, block_size, 3)
@@ -56,7 +57,7 @@ class ImageSteganography:
 
     def _unshuffle_image(self, img_pil, password):
         img_np = np.array(img_pil)
-        block_size = 8
+        block_size = 4
         num_blocks = 256 // block_size
         
         blocks = img_np.reshape(num_blocks, block_size, num_blocks, block_size, 3)
@@ -71,6 +72,21 @@ class ImageSteganography:
         
         return Image.fromarray(unshuffled_np)
 
+    def _make_square(self, img_pil):
+        """Pads an image to square with black bars while maintaining aspect ratio."""
+        w, h = img_pil.size
+        if w == h:
+            return img_pil
+        
+        max_dim = max(w, h)
+        new_img = Image.new("RGB", (max_dim, max_dim), (0, 0, 0))
+        
+        # Center the image
+        left = (max_dim - w) // 2
+        top = (max_dim - h) // 2
+        new_img.paste(img_pil, (left, top))
+        return new_img
+
     def hide_image(self, cover_path, secret_path, output_path, password=None):
         cover_pil = Image.open(cover_path)
         if cover_pil.mode != 'RGB':
@@ -79,6 +95,10 @@ class ImageSteganography:
         secret_pil = Image.open(secret_path)
         if secret_pil.mode != 'RGB':
             secret_pil = secret_pil.convert('RGB')
+
+        # Handle rectangular images via padding to square
+        cover_pil = self._make_square(cover_pil)
+        secret_pil = self._make_square(secret_pil)
 
         if password:
             secret_pil = self._shuffle_image(secret_pil, password)
@@ -104,6 +124,19 @@ class ImageSteganography:
         
         if password:
             revealed_img_pil = self._unshuffle_image(revealed_img_pil, password)
+            
+            # Post-processing: Deblocking filter
+            # Convert to numpy/cv2 format (HWC, BGR)
+            img_np = np.array(revealed_img_pil)
+            img_bgr = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
+            
+            # Apply a light deblocking filter
+            # Bilateral filter is good for smoothing flat areas while keeping edges sharp
+            deblocked = cv2.bilateralFilter(img_bgr, d=5, sigmaColor=50, sigmaSpace=50)
+            
+            # Convert back to RGB and PIL
+            img_rgb_final = cv2.cvtColor(deblocked, cv2.COLOR_BGR2RGB)
+            revealed_img_pil = Image.fromarray(img_rgb_final)
             
         revealed_img_pil.save(output_path)
         return True
