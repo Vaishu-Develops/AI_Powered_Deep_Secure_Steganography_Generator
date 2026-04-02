@@ -30,8 +30,9 @@ for d in [UPLOAD_DIR, TEMP_DIR]:
         os.makedirs(d)
 
 # Initialize Image Steganography
-H_MODEL = "backend/checkpoints/netH.pth"
-R_MODEL = "backend/checkpoints/netR.pth"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+H_MODEL = os.path.join(BASE_DIR, "checkpoints", "netH.pth")
+R_MODEL = os.path.join(BASE_DIR, "checkpoints", "netR.pth")
 image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
 
 @app.post("/hide-text")
@@ -128,4 +129,4 @@ async def reveal_image(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
