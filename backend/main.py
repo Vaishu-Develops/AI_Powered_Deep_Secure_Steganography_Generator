@@ -78,14 +78,8 @@ def assemble_models():
 
 print("Starting startup sequence...")
 assemble_models()
-print("Initializing model architectures...")
-try:
-    image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
-    print("Application initialized successfully.")
-except Exception as e:
-    print(f"CRITICAL: Failed to initialize steganography engine: {str(e)}")
-    # We create a dummy object to let the app start but fail on usage
-    image_steg = None
+image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
+print("Application ready (Models will be loaded lazily on first request).")
 
 @app.post("/hide-text")
 async def hide_text(
