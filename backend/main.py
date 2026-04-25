@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 import uuid
+import gc
 try:
     from .text_steg import TextSteganography
     from .image_steg import ImageSteganography
@@ -152,6 +153,7 @@ async def hide_image(
         
     try:
         image_steg.hide_image(cover_path, secret_path, output_path, password=password)
+        gc.collect()
         return FileResponse(output_path, media_type="image/png", filename="stego_image.png")
     except Exception as e:
         import traceback
@@ -172,6 +174,7 @@ async def reveal_image(
         
     try:
         image_steg.reveal_image(stego_path, output_path, password=password)
+        gc.collect()
         return FileResponse(output_path, media_type="image/png", filename="revealed_secret.png")
     except Exception as e:
         import traceback

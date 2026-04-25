@@ -1,6 +1,7 @@
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
+import gc
 try:
     from .models import UnetGenerator, RevealNet
 except ImportError:
@@ -71,7 +72,7 @@ class ImageSteganography:
         unshuffled_np = unshuffled_np.transpose(0, 2, 1, 3, 4).reshape(h, w, 3)
         return Image.fromarray(unshuffled_np)
 
-    def _get_optimal_size(self, w, h, max_dim=768, multiple=128):
+    def _get_optimal_size(self, w, h, max_dim=512, multiple=128):
         """Calculates new dimensions maintaining aspect ratio, capped by max_dim, rounded to multiple."""
         if max(w, h) > max_dim:
             scale = max_dim / max(w, h)
@@ -109,8 +110,12 @@ class ImageSteganography:
         with torch.no_grad():
             container = self.h_net(input_img)
             
-        container_img = transforms.ToPILImage()(container.squeeze(0).cpu().clamp(0, 1))
+        container_img = transforms.ToPILImage()(container.squeeze(0).cpu().detach().clamp(0, 1))
         container_img.save(output_path)
+
+        # Force memory cleanup
+        del cover, secret, input_img, container
+        gc.collect()
         return True
 
     def reveal_image(self, container_path, output_path, password=None):
@@ -130,8 +135,12 @@ class ImageSteganography:
         with torch.no_grad():
             revealed = self.r_net(container)
             
-        revealed_img_pil = transforms.ToPILImage()(revealed.squeeze(0).cpu().clamp(0, 1))
+        revealed_img_pil = transforms.ToPILImage()(revealed.squeeze(0).cpu().detach().clamp(0, 1))
         
+        # Cleanup tensors immediately
+        del container, revealed
+        gc.collect()
+
         if password:
             revealed_img_pil = self._unshuffle_image(revealed_img_pil, password)
             
