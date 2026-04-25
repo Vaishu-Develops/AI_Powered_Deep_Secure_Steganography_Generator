@@ -38,30 +38,53 @@ R_MODEL = os.path.join(BASE_DIR, "weights", "netR.pth")
 
 # Reassemble netH.pth from parts if needed (to bypass Git LFS bandwidth limits)
 def assemble_models():
+    print(f"Checking models in {BASE_DIR}/weights...")
     h_parts = [
         os.path.join(BASE_DIR, "weights", "netH_part1.bin"),
         os.path.join(BASE_DIR, "weights", "netH_part2.bin")
     ]
     
-    # Check if netH.pth is an LFS pointer or missing
-    needs_assembly = not os.path.exists(H_MODEL)
+    # Check netH.pth
+    needs_h = not os.path.exists(H_MODEL)
     if os.path.exists(H_MODEL):
         with open(H_MODEL, 'rb') as f:
             if b'version https://git-lfs' in f.read(100):
-                needs_assembly = True
+                print("netH.pth is an LFS pointer, needs reassembly.")
+                needs_h = True
     
-    if needs_assembly:
+    if needs_h:
         print("Assembling netH.pth from chunks...")
-        with open(H_MODEL, 'wb') as f_out:
-            for p in h_parts:
-                if os.path.exists(p):
-                    with open(p, 'rb') as f_in:
-                        f_out.write(f_in.read())
-                else:
-                    print(f"Warning: Part missing {p}")
+        try:
+            with open(H_MODEL, 'wb') as f_out:
+                for p in h_parts:
+                    if os.path.exists(p):
+                        print(f"Reading part: {p}")
+                        with open(p, 'rb') as f_in:
+                            f_out.write(f_in.read())
+                    else:
+                        print(f"ERROR: Model chunk missing: {p}")
+            print("Successfully reassembled netH.pth")
+        except Exception as e:
+            print(f"CRITICAL ERROR during assembly: {str(e)}")
 
+    # Check netR.pth (it's small but could still be an LFS pointer if not pushed correctly)
+    if os.path.exists(R_MODEL):
+        with open(R_MODEL, 'rb') as f:
+            if b'version https://git-lfs' in f.read(100):
+                print("WARNING: netR.pth is still an LFS pointer! Reveal functionality will fail.")
+    else:
+        print("ERROR: netR.pth is missing!")
+
+print("Starting startup sequence...")
 assemble_models()
-image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
+print("Initializing model architectures...")
+try:
+    image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
+    print("Application initialized successfully.")
+except Exception as e:
+    print(f"CRITICAL: Failed to initialize steganography engine: {str(e)}")
+    # We create a dummy object to let the app start but fail on usage
+    image_steg = None
 
 @app.post("/hide-text")
 async def hide_text(
