@@ -33,8 +33,8 @@ for d in [UPLOAD_DIR, TEMP_DIR]:
 
 # Initialize Image Steganography
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-H_MODEL = os.path.join(BASE_DIR, "checkpoints", "netH.pth")
-R_MODEL = os.path.join(BASE_DIR, "checkpoints", "netR.pth")
+H_MODEL = os.path.join(BASE_DIR, "weights", "netH.pth")
+R_MODEL = os.path.join(BASE_DIR, "weights", "netR.pth")
 image_steg = ImageSteganography(h_model_path=H_MODEL, r_model_path=R_MODEL)
 
 @app.post("/hide-text")
