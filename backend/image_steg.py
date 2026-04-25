@@ -19,12 +19,12 @@ class ImageSteganography:
         if h_model_path:
             if not os.path.exists(h_model_path):
                 raise FileNotFoundError(f"Hiding model weights not found at: {h_model_path}")
-            self.h_net.load_state_dict(torch.load(h_model_path, map_location=self.device))
+            self.h_net.load_state_dict(torch.load(h_model_path, map_location=self.device, weights_only=False))
             
         if r_model_path:
             if not os.path.exists(r_model_path):
                 raise FileNotFoundError(f"Reveal model weights not found at: {r_model_path}")
-            self.r_net.load_state_dict(torch.load(r_model_path, map_location=self.device))
+            self.r_net.load_state_dict(torch.load(r_model_path, map_location=self.device, weights_only=False))
 
         self.to_tensor = transforms.ToTensor()
 
