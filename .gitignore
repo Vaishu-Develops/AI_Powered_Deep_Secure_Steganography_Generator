@@ -27,9 +27,10 @@ backend/temp/
 backend/uploads/
 
 # Model checkpoints and archives (large binaries)
-# Model checkpoints (using Git LFS)
-# *.pth and backend/checkpoints/ removed from here to allow LFS tracking
 pytorch-Deep-Steganography/checkPoint/
+backend/weights/netH.pth
+# Keep netR.pth as it is small (<4MB)
+# Keep netH_part*.bin chunks for standard Git tracking
 
 # Local outputs/images
 result_*.png
