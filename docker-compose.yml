@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  stegan-ai:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/backend/uploads
+      - ./backend/temp:/app/backend/temp
+    restart: always

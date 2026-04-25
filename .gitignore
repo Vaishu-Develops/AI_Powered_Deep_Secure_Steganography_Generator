@@ -27,12 +27,8 @@ backend/temp/
 backend/uploads/
 
 # Model checkpoints and archives (large binaries)
-*.pth
-*.pt
-*.ckpt
-*.tar.gz
-*.tar.gz.*
-backend/checkpoints/
+# Model checkpoints (using Git LFS)
+# *.pth and backend/checkpoints/ removed from here to allow LFS tracking
 pytorch-Deep-Steganography/checkPoint/
 
 # Local outputs/images

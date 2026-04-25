@@ -3,7 +3,8 @@ import { Upload, Image as ImageIcon, MessageSquare, Shield, Download, ArrowRight
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_BASE = 'http://localhost:8000';
+// Use the current origin in production (same domain), or localhost in dev
+const API_BASE = import.meta.env.PROD ? window.location.origin : 'http://localhost:8000';
 
 const handleAxiosError = async (e) => {
   console.error(e);

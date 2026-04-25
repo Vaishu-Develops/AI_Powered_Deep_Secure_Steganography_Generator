@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 import uuid
@@ -126,6 +127,27 @@ async def reveal_image(
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=400, detail=str(e))
+
+# Configure Static Files (Frontend)
+# Looking for frontend/dist relative to backend folder
+FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend", "dist")
+
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
+
+    @app.get("/")
+    async def serve_spa():
+        return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
+    # Catch-all for SPA support
+    @app.get("/{full_path:path}")
+    async def catch_all(full_path: str):
+        if full_path.startswith("hide") or full_path.startswith("reveal"):
+            return None
+        path = os.path.join(FRONTEND_DIR, full_path)
+        if os.path.isfile(path):
+            return FileResponse(path)
+        return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
 if __name__ == "__main__":
     import uvicorn
