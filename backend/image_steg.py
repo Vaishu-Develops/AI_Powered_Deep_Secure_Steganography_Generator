@@ -83,7 +83,7 @@ class ImageSteganography:
         unshuffled_np = unshuffled_np.transpose(0, 2, 1, 3, 4).reshape(h, w, 3)
         return Image.fromarray(unshuffled_np)
 
-    def _get_optimal_size(self, w, h, max_dim=512, multiple=128):
+    def _get_optimal_size(self, w, h, max_dim=384, multiple=128):
         if max(w, h) > max_dim:
             scale = max_dim / max(w, h)
             new_w = w * scale

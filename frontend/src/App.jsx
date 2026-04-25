@@ -37,7 +37,7 @@ function App() {
   return (
     <div className="container">
       <header className="hero animate-in">
-        <h1>Stegan AI</h1>
+        <h1>DeepSteganography AI</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>
           Advanced Steganography Powered by Deep Learning & Cryptography
         </p>
