@@ -38,7 +38,7 @@ function App() {
     <div className="container">
       <header className="hero animate-in">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
-          <img src="/logo.png" alt="DeepSteganography AI Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '3px solid var(--border)', boxShadow: 'var(--shadow)' }} />
+          <img src="/logo-saffron.png" alt="DeepSteganography AI Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '3px solid var(--border)', boxShadow: 'var(--shadow)' }} />
           <h1>DeepSteganography AI</h1>
         </div>
         <p style={{ color: 'var(--text-muted)', fontWeight: '500' }}>
