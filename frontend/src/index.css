@@ -323,19 +323,21 @@ body {
 .terminal-code-cmd { color: var(--accent-1); }
 
 .terminal-cursor {
-  border-right: 2px solid var(--primary);
-  animation: blink 1s step-end infinite;
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background-color: var(--primary);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
 }
 
 @keyframes blink {
-  50% { border-color: transparent; }
+  50% { opacity: 0; }
 }
 
 .welcome-btn {
   margin-top: 40px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideUpFade 0.5s ease forwards 1s;
 }
 
 @keyframes slideUpFade {
