@@ -324,15 +324,20 @@ body {
 
 .terminal-cursor {
   display: inline-block;
-  width: 8px;
-  height: 1.2em;
+  width: 9px;
+  height: 1.1em;
   background-color: var(--primary);
-  margin-left: 4px;
+  margin-left: 2px;
   vertical-align: middle;
-  animation: blink 0.8s step-end infinite;
+  animation: none; /* No blink while typing for stability */
 }
 
-@keyframes blink {
+/* Optional: Only blink when the sequence is paused or finished */
+.terminal-cursor-blink {
+  animation: cursorBlink 0.8s step-end infinite;
+}
+
+@keyframes cursorBlink {
   50% { opacity: 0; }
 }
 
