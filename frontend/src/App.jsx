@@ -37,11 +37,11 @@ function App() {
   return (
     <div className="container">
       <header className="hero animate-in">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '10px' }}>
-          <img src="/logo.png" alt="DeepSteganography AI Logo" style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--glass-border)' }} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
+          <img src="/logo.png" alt="DeepSteganography AI Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '3px solid var(--border)', boxShadow: 'var(--shadow)' }} />
           <h1>DeepSteganography AI</h1>
         </div>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>
+        <p style={{ color: 'var(--text-muted)', fontWeight: '500' }}>
           Advanced Steganography Powered by Deep Learning & Cryptography
         </p>
       </header>
@@ -82,9 +82,9 @@ function App() {
         </AnimatePresence>
 
         {loading && (
-          <div className="glass" style={{ padding: '40px', textAlign: 'center', marginTop: '40px' }}>
+          <div className="glass card" style={{ padding: '40px', textAlign: 'center', marginTop: '40px' }}>
             <div className="spinner"></div>
-            <p style={{ marginTop: '16px' }}>Processing... (~5-20s)</p>
+            <p style={{ marginTop: '16px', color: 'var(--primary)', fontWeight: '700' }}>Processing... (~5-20s)</p>
           </div>
         )}
 
