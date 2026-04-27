@@ -243,6 +243,105 @@ body {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+/* Welcome Page Styles */
+.welcome-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-page);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.terminal-card {
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(8px);
+  min-width: 320px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+.terminal-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  z-index: 10;
+  border: 1px solid var(--secondary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.terminal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  padding-inline: 12px;
+  background-color: var(--secondary);
+}
+
+.terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.terminal-body {
+  display: flex;
+  flex-direction: column;
+  background-color: #0f172a;
+  padding: 1.5rem;
+  font-family: 'Fira Code', monospace;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.terminal-pre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-code-prefix { color: var(--accent-2); }
+.terminal-code-cmd { color: var(--accent-1); }
+
+.terminal-cursor {
+  border-right: 2px solid var(--primary);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.welcome-btn {
+  margin-top: 40px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUpFade 0.5s ease forwards 1s;
+}
+
+@keyframes slideUpFade {
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .container {

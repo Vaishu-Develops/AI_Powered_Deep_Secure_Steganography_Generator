@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Image as ImageIcon, MessageSquare, Shield, Download, ArrowRight, Eye, FileSearch } from 'lucide-react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import WelcomePage from './WelcomePage';
 
 // Use the current origin in production (same domain), or localhost in dev
 const API_BASE = import.meta.env.PROD ? window.location.origin : 'http://localhost:8000';
@@ -22,10 +23,18 @@ const handleAxiosError = async (e) => {
 };
 
 function App() {
+  const [showWelcome, setShowWelcome] = useState(() => {
+    return !sessionStorage.getItem('hasEntered');
+  });
   const [activeTab, setActiveTab] = useState('image-hide');
   const [loading, setLoading] = useState(false);
   const [resultImage, setResultImage] = useState(null);
   const [extractedText, setExtractedText] = useState('');
+
+  const handleEnter = () => {
+    setShowWelcome(false);
+    sessionStorage.setItem('hasEntered', 'true');
+  };
 
   const tabs = [
     { id: 'image-hide', label: 'Image Hiding', icon: ImageIcon },
@@ -33,6 +42,10 @@ function App() {
     { id: 'text-hide', label: 'Text Hiding', icon: MessageSquare },
     { id: 'text-extract', label: 'Text Extracting', icon: Shield },
   ];
+
+  if (showWelcome) {
+    return <WelcomePage onEnter={handleEnter} />;
+  }
 
   return (
     <div className="container">
